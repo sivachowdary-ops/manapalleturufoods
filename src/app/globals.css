@@ -2157,13 +2157,14 @@ button, input, select, textarea {
   }
   
   .weight-selector {
-    flex-direction: column !important;
+    flex-direction: row !important;
     gap: 0.35rem !important;
     margin-bottom: 0.75rem !important;
   }
   
   .weight-selector button {
-    width: 100% !important;
+    width: auto !important;
+    flex: 1 !important;
     padding: 0.4rem 0.25rem !important;
     font-size: 0.7rem !important;
   }
@@ -2228,6 +2229,16 @@ button, input, select, textarea {
 
   .announcement-bar {
     font-size: 0.75rem;
+  }
+  
+  .footer-logo-wrapper {
+    width: 50px !important;
+    height: 50px !important;
+    min-width: 50px !important;
+  }
+  
+  .footer-brand-title {
+    font-size: 1.25rem !important;
   }
 
   .admin-metrics-row {
@@ -2661,6 +2672,7 @@ button, input, select, textarea {
   overflow: hidden;
   border: 2px solid var(--color-accent);
   background-color: #FFFFFF;
+  flex-shrink: 0;
 }
 
 .footer-brand-title {
