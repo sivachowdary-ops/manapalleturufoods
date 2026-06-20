@@ -124,15 +124,15 @@ export default function HomePage() {
             <div className="hero-btn-group">
               <button 
                 className="hero-btn"
-                onClick={() => document.getElementById('combos').scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => document.getElementById('pickles').scrollIntoView({ behavior: 'smooth' })}
               >
-                Explore Combos
+                Shop Now
               </button>
               <button 
                 className="hero-btn-ghost"
-                onClick={() => document.getElementById('products').scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => document.getElementById('combos').scrollIntoView({ behavior: 'smooth' })}
               >
-                Explore Pickles
+                Explore Categories
               </button>
             </div>
           </div>

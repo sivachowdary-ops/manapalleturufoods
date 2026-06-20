@@ -158,7 +158,7 @@ export default function NavbarWrapper() {
           </div>
 
           <nav className="mobile-drawer-nav">
-            {navItems.map((item) => (
+            {navItems.filter(item => item.id !== 'about' && item.id !== 'reviews').map((item) => (
               <Link
                 key={item.label}
                 href={item.href}

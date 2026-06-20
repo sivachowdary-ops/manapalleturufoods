@@ -423,6 +423,7 @@ button, input, select, textarea {
   background-color: var(--color-accent-light);
   border-top: 1px solid var(--color-border);
   border-bottom: 1px solid var(--color-border);
+  overflow: hidden;
 }
 
 .combos-grid {
@@ -2051,7 +2052,7 @@ button, input, select, textarea {
   .hero-section {
     height: auto;
     padding: 3rem 1rem; /* Shrunk padding to reduce height */
-    text-align: center;
+    text-align: left;
   }
   
   .hero-container {
@@ -2059,8 +2060,8 @@ button, input, select, textarea {
   }
   
   .hero-content {
-    text-align: center;
-    margin: 0 auto;
+    text-align: left;
+    margin: 0;
   }
 
   .hero-title br {
@@ -2077,8 +2078,21 @@ button, input, select, textarea {
   }
 
   .hero-btn-group {
-    justify-content: center;
-    gap: 1rem;
+    justify-content: flex-start !important;
+    flex-wrap: nowrap !important;
+    gap: 0.75rem !important;
+    width: 100% !important;
+  }
+  
+  .hero-btn, .hero-btn-ghost {
+    padding: 0.75rem 1rem !important;
+    font-size: 0.85rem !important;
+    white-space: nowrap !important;
+    flex: 1 !important;
+    text-align: center !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
   
   .combos-grid {
@@ -2409,6 +2423,7 @@ button, input, select, textarea {
   background-color: var(--color-bg);
   background-image: radial-gradient(rgba(201, 162, 75, 0.12) 1.5px, transparent 1.5px);
   background-size: 24px 24px;
+  overflow: hidden;
 }
 
 .reviews-grid {
