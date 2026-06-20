@@ -119,7 +119,7 @@ export default function HomePage() {
             <span className="hero-badge">Traditional & Authentic</span>
             <h1 className="hero-title">MANA PALLETURU <br /> FOODS</h1>
             <p className="hero-description">
-              Rich, Slow-Cooked Premium Non-Veg Pickles. Experience the culinary heritage of Godavari. Made with 100% natural ingredients, premium cut meats, freshly hand-ground spices, and pure cold-pressed oil. Slow-cooked in small batches with zero synthetic preservatives.
+              Rich, Slow-Cooked Premium Non-Veg Pickles. Experience the culinary heritage of Godavari. Made with 100% natural ingredients and freshly hand-ground spices.
             </p>
             <div className="hero-btn-group">
               <button 
@@ -151,9 +151,8 @@ export default function HomePage() {
 
         <div className="combos-grid">
           {combos.map((combo) => (
-            <Link 
+            <div 
               key={combo.id} 
-              href={`/product/${combo.id}`} 
               className="combo-card-link"
             >
               <div className="combo-card">
@@ -170,7 +169,6 @@ export default function HomePage() {
                 </div>
                 <div className="combo-info">
                   <h3 className="combo-name">{combo.name}</h3>
-                  <p className="combo-desc">{combo.description}</p>
                   
                   <div className="combo-contents-box" style={{ marginBottom: '1.5rem' }}>
                     <div className="combo-contents-list">
@@ -198,7 +196,7 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       </section>
@@ -232,9 +230,6 @@ export default function HomePage() {
                   <h3 className="pickle-name" style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: 'var(--color-primary-dark)', fontWeight: 700 }}>
                     <Link href={`/product/${product.id}`} className="hover-underline">{product.name}</Link>
                   </h3>
-                  <p className="pickle-desc" style={{ fontSize: '0.85rem', color: 'var(--color-text-light)', lineHeight: 1.5, marginBottom: '1.25rem', flexGrow: 1 }}>
-                    {product.description}
-                  </p>
                   
                   {/* Weight Selector */}
                   <div className="weight-selector" style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.25rem' }}>

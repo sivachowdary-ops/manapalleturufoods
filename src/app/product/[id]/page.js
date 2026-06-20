@@ -27,12 +27,16 @@ function ProductDetailContent() {
     async function fetchItem() {
       try {
         let fetchedData = null;
-        if (isComboQuery) {
-          fetchedData = await getComboById(id);
-          setSelectedWeight('1kg (Combo Pack)');
-        } else {
-          fetchedData = await getProductById(id);
+        // First try to fetch from products
+        fetchedData = await getProductById(id);
+        if (fetchedData) {
           setSelectedWeight('500gms');
+        } else {
+          // If not found in products, try combos
+          fetchedData = await getComboById(id);
+          if (fetchedData) {
+            setSelectedWeight('1kg (Combo Pack)');
+          }
         }
         
         if (fetchedData) {
@@ -48,7 +52,7 @@ function ProductDetailContent() {
       }
     }
     fetchItem();
-  }, [id, isComboQuery]);
+  }, [id]);
 
   if (loading) {
     return (

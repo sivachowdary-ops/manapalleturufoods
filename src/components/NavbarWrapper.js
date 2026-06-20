@@ -5,7 +5,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
-import { ShoppingCart, ShoppingBag, MessageCircle, Menu, X } from 'lucide-react';
+import { 
+  ShoppingCart, ShoppingBag, MessageCircle, Menu, X,
+  Home, Award, Package, Heart, Star, ClipboardList, Phone 
+} from 'lucide-react';
 
 export default function NavbarWrapper() {
   const pathname = usePathname();
@@ -46,13 +49,13 @@ export default function NavbarWrapper() {
   };
 
   const navItems = [
-    { label: 'Home', href: '/', id: 'home' },
-    { label: 'Best Sellers', href: '/#combos', id: 'combos' },
-    { label: 'Our Pickles', href: '/#pickles', id: 'pickles' },
-    { label: 'About Us', href: '/#about', id: 'about' },
-    { label: 'Reviews', href: '/#reviews', id: 'reviews' },
-    { label: 'How to Order', href: '/#how-to-order', id: 'how-to-order' },
-    { label: 'Contact Us', href: '/#contact', id: 'contact' }
+    { label: 'Home', href: '/', id: 'home', icon: <Home size={18} /> },
+    { label: 'Best Sellers', href: '/#combos', id: 'combos', icon: <Award size={18} /> },
+    { label: 'Our Pickles', href: '/#pickles', id: 'pickles', icon: <Package size={18} /> },
+    { label: 'About Us', href: '/#about', id: 'about', icon: <Heart size={18} /> },
+    { label: 'Reviews', href: '/#reviews', id: 'reviews', icon: <Star size={18} /> },
+    { label: 'How to Order', href: '/#how-to-order', id: 'how-to-order', icon: <ClipboardList size={18} /> },
+    { label: 'Contact Us', href: '/#contact', id: 'contact', icon: <Phone size={18} /> }
   ];
 
   return (
@@ -138,7 +141,23 @@ export default function NavbarWrapper() {
       {/* 3. Mobile Hamburger Navigation Overlay */}
       <div className={`mobile-menu-overlay ${isMobileMenuOpen ? 'open' : ''}`} onClick={() => setIsMobileMenuOpen(false)}>
         <div className="mobile-menu-drawer" onClick={(e) => e.stopPropagation()}>
-          <nav>
+          {/* Mobile Drawer Header with Logo & Brand Name */}
+          <div className="mobile-drawer-header">
+            <div className="mobile-drawer-brand">
+              <div className="mobile-drawer-logo-container">
+                <Image src="/logo.png" alt="Mana Palleturu Foods Logo" width={40} height={40} className="mobile-drawer-logo" />
+              </div>
+              <div className="mobile-drawer-brand-text">
+                <span className="brand-name-top">Mana Palleturu</span>
+                <span className="brand-name-bottom">Foods</span>
+              </div>
+            </div>
+            <button className="mobile-drawer-close" onClick={() => setIsMobileMenuOpen(false)} aria-label="Close Menu">
+              <X size={24} />
+            </button>
+          </div>
+
+          <nav className="mobile-drawer-nav">
             {navItems.map((item) => (
               <Link
                 key={item.label}
@@ -158,7 +177,8 @@ export default function NavbarWrapper() {
                   item.id === 'home' && pathname === '/' ? 'active' : ''
                 }`}
               >
-                {item.label}
+                <span className="mobile-nav-icon">{item.icon}</span>
+                <span className="mobile-nav-text">{item.label}</span>
               </Link>
             ))}
           </nav>
