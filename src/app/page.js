@@ -119,7 +119,7 @@ export default function HomePage() {
             <span className="hero-badge">Traditional & Authentic</span>
             <h1 className="hero-title">MANA PALLETURU <br /> FOODS</h1>
             <p className="hero-description">
-              Rich, Slow-Cooked Premium Non-Veg Pickles. Experience the culinary heritage of Godavari. Made with 100% natural ingredients and freshly hand-ground spices.
+              Authentic Andhra pickles, slow-cooked the traditional way. 100% natural ingredients, hand-ground spices, zero preservatives.
             </p>
             <div className="hero-btn-group">
               <button 
