@@ -13,6 +13,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const { addToCart } = useCart();
   const [addedItemMessage, setAddedItemMessage] = useState(null);
+  const [selectedWeights, setSelectedWeights] = useState({});
 
   useEffect(() => {
     async function loadData() {
@@ -36,6 +37,18 @@ export default function HomePage() {
     e.stopPropagation();
     addToCart(combo, '1kg (Combo Pack)', combo.price, 1);
     triggerSuccessNotification(`${combo.name} Added to Cart!`);
+  };
+
+  const handleWeightChange = (productId, weight) => {
+    setSelectedWeights(prev => ({ ...prev, [productId]: weight }));
+  };
+
+  const handleAddProductToCart = (product, e) => {
+    e.preventDefault();
+    const weight = selectedWeights[product.id] || '500gms';
+    const price = weight === '500gms' ? product.price_500gms : product.price_1kg;
+    addToCart(product, weight, price, 1);
+    triggerSuccessNotification(`${product.name} (${weight === '500gms' ? '500g' : '1kg'}) Added to Cart!`);
   };
 
   const triggerSuccessNotification = (message) => {
@@ -104,7 +117,7 @@ export default function HomePage() {
         <div className="hero-container">
           <div className="hero-content">
             <span className="hero-badge">Traditional & Authentic</span>
-            <h1 className="hero-title">MANA PALLETURU<br />FOODS</h1>
+            <h1 className="hero-title">MANA PALLETURU <br /> FOODS</h1>
             <p className="hero-description">
               Rich, Slow-Cooked Premium Non-Veg Pickles. Experience the culinary heritage of Godavari. Made with 100% natural ingredients, premium cut meats, freshly hand-ground spices, and pure cold-pressed oil. Slow-cooked in small batches with zero synthetic preservatives.
             </p>
@@ -126,40 +139,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. Value Props Section */}
-      <section style={{ padding: '3rem 2rem', backgroundColor: '#FFFFFF', borderBottom: '1px solid var(--color-border)' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2rem' }} className="pickles-grid">
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
-            <div style={{ backgroundColor: 'var(--color-accent-light)', padding: '0.75rem', borderRadius: '12px', color: 'var(--color-primary)' }}>
-              <Award size={24} />
-            </div>
-            <div>
-              <h3 style={{ fontSize: '1.1rem', marginBottom: '0.4rem', color: 'var(--color-primary-dark)' }}>Slow-Cooked Heritage</h3>
-              <p style={{ fontSize: '0.85rem', color: 'var(--color-text-light)', lineHeight: 1.5 }}>Made using age-old Andhra clay-pot recipes passed down through generations.</p>
-            </div>
-          </div>
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
-            <div style={{ backgroundColor: 'var(--color-accent-light)', padding: '0.75rem', borderRadius: '12px', color: 'var(--color-primary)' }}>
-              <ShieldCheck size={24} />
-            </div>
-            <div>
-              <h3 style={{ fontSize: '1.1rem', marginBottom: '0.4rem', color: 'var(--color-primary-dark)' }}>100% Preservative Free</h3>
-              <p style={{ fontSize: '0.85rem', color: 'var(--color-text-light)', lineHeight: 1.5 }}>We do not use any vinegar, chemical additives, artificial colors or preservatives.</p>
-            </div>
-          </div>
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
-            <div style={{ backgroundColor: 'var(--color-accent-light)', padding: '0.75rem', borderRadius: '12px', color: 'var(--color-primary)' }}>
-              <Flame size={24} />
-            </div>
-            <div>
-              <h3 style={{ fontSize: '1.1rem', marginBottom: '0.4rem', color: 'var(--color-primary-dark)' }}>Cold-Pressed Oils</h3>
-              <p style={{ fontSize: '0.85rem', color: 'var(--color-text-light)', lineHeight: 1.5 }}>Preserved naturally in pure cold-pressed groundnut oil and fresh spices.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. Best Seller Combos Section (Homepage Centerpiece) */}
+      {/* 3. Best Seller Combos Section (Homepage Centerpiece) */}
       <section id="combos" className="combos-section">
         <div className="section-header">
           <span className="section-tagline">Signature Selections</span>
@@ -223,7 +203,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 5. Individual Pickle Products Section */}
+      {/* 4. Individual Pickle Products Section */}
       <section id="pickles" className="pickles-section">
         <div className="section-header">
           <span className="section-tagline">Crafted Individual Jars</span>
@@ -234,38 +214,83 @@ export default function HomePage() {
         </div>
 
         <div className="pickles-grid">
-          {products.map((product) => (
-            <div key={product.id} className="pickle-card">
-              <div className="pickle-img-wrapper">
-                <Image 
-                  src={product.image_url} 
-                  alt={product.name} 
-                  fill
-                  style={{ objectFit: 'cover' }}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 33vw, 25vw"
-                />
-              </div>
-              <div className="pickle-info">
-                <h3 className="pickle-name">{product.name}</h3>
-                <p className="pickle-desc">{product.description}</p>
-                
-                <div className="pickle-action-row">
-                  <div>
-                    <div className="pickle-price-label">From</div>
-                    <span className="pickle-price">₹{product.price_500gms}</span>
+          {products.map((product) => {
+            const weight = selectedWeights[product.id] || '500gms';
+            const price = weight === '500gms' ? product.price_500gms : product.price_1kg;
+            return (
+              <div key={product.id} className="pickle-card">
+                <div className="pickle-img-wrapper">
+                  <Image 
+                    src={product.image_url} 
+                    alt={product.name} 
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 33vw, 25vw"
+                  />
+                </div>
+                <div className="pickle-info" style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+                  <h3 className="pickle-name" style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: 'var(--color-primary-dark)', fontWeight: 700 }}>
+                    <Link href={`/product/${product.id}`} className="hover-underline">{product.name}</Link>
+                  </h3>
+                  <p className="pickle-desc" style={{ fontSize: '0.85rem', color: 'var(--color-text-light)', lineHeight: 1.5, marginBottom: '1.25rem', flexGrow: 1 }}>
+                    {product.description}
+                  </p>
+                  
+                  {/* Weight Selector */}
+                  <div className="weight-selector" style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.25rem' }}>
+                    <button 
+                      type="button"
+                      onClick={() => handleWeightChange(product.id, '500gms')}
+                      style={{
+                        flex: 1,
+                        padding: '0.5rem 0.25rem',
+                        fontSize: '0.75rem',
+                        borderRadius: '6px',
+                        border: '1.5px solid',
+                        borderColor: weight === '500gms' ? 'var(--color-primary)' : 'var(--color-border)',
+                        backgroundColor: weight === '500gms' ? 'var(--color-primary-light)' : 'transparent',
+                        color: weight === '500gms' ? 'var(--color-primary-dark)' : 'var(--color-text-light)',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        transition: 'all 0.2s',
+                        textAlign: 'center'
+                      }}
+                    >
+                      500g • ₹{product.price_500gms}
+                    </button>
+                    <button 
+                      type="button"
+                      onClick={() => handleWeightChange(product.id, '1kg')}
+                      style={{
+                        flex: 1,
+                        padding: '0.5rem 0.25rem',
+                        fontSize: '0.75rem',
+                        borderRadius: '6px',
+                        border: '1.5px solid',
+                        borderColor: weight === '1kg' ? 'var(--color-primary)' : 'var(--color-border)',
+                        backgroundColor: weight === '1kg' ? 'var(--color-primary-light)' : 'transparent',
+                        color: weight === '1kg' ? 'var(--color-primary-dark)' : 'var(--color-text-light)',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        transition: 'all 0.2s',
+                        textAlign: 'center'
+                      }}
+                    >
+                      1kg • ₹{product.price_1kg}
+                    </button>
                   </div>
                   
-                  <Link 
-                    href={`/product/${product.id}`}
+                  <button 
                     className="add-to-cart-btn"
-                    style={{ fontSize: '0.85rem', padding: '0.6rem 1rem', height: '42px', minHeight: '42px' }}
+                    onClick={(e) => handleAddProductToCart(product, e)}
+                    style={{ width: '100%', justifyContent: 'center', gap: '0.5rem', height: '42px', minHeight: '42px', fontSize: '0.9rem' }}
                   >
-                    Select Option <ChevronRight size={16} />
-                  </Link>
+                    <ShoppingCart size={18} /> Add to Cart
+                  </button>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
@@ -358,7 +383,7 @@ export default function HomePage() {
 
       {/* How to Order Section */}
       <section id="how-to-order" className="how-to-order-section">
-        <div className="section-header">
+        <div className="section-header" style={{ marginBottom: '3.5rem' }}>
           <span className="section-tagline">Seamless Checkout</span>
           <h2 className="section-title">How To Order</h2>
           <p style={{ color: 'var(--color-text-light)', marginTop: '0.5rem', fontSize: '0.95rem' }}>
@@ -366,41 +391,47 @@ export default function HomePage() {
           </p>
         </div>
         
-        <div className="steps-grid">
-          <div className="step-card">
-            <div className="step-num-badge">1</div>
-            <div className="step-icon-box">
-              <Search size={32} />
+        <div className="how-to-order-timeline">
+          <div className="timeline-line"></div>
+          
+          <div className="timeline-step">
+            <div className="timeline-dot"></div>
+            <div className="timeline-content">
+              <h3>Step 1: Choose Pickles</h3>
+              <p>Browse our rich selection of premium non-veg pickles and combo packs.</p>
             </div>
-            <h3 className="step-title">Browse & Select</h3>
-            <p className="step-desc">Choose your favorite individual pickles or premium combo packs and add them to your cart.</p>
           </div>
           
-          <div className="step-card">
-            <div className="step-num-badge">2</div>
-            <div className="step-icon-box">
-              <ShoppingBag size={32} />
+          <div className="timeline-step">
+            <div className="timeline-dot"></div>
+            <div className="timeline-content">
+              <h3>Step 2: Select Package Size</h3>
+              <p>Choose package weights (500g or 1kg) and add items directly to your cart.</p>
             </div>
-            <h3 className="step-title">Review Your Cart</h3>
-            <p className="step-desc">Open the cart page, select package weights (500g or 1kg), quantities, and enter your delivery details.</p>
           </div>
           
-          <div className="step-card">
-            <div className="step-num-badge">3</div>
-            <div className="step-icon-box">
-              <MessageCircle size={32} />
+          <div className="timeline-step">
+            <div className="timeline-dot"></div>
+            <div className="timeline-content">
+              <h3>Step 3: Enter Delivery Details</h3>
+              <p>Fill in your delivery address and choose your shipping state in the checkout wizard.</p>
             </div>
-            <h3 className="step-title">WhatsApp Checkout</h3>
-            <p className="step-desc">Click checkout to immediately open a pre-formatted WhatsApp chat with your order details pre-filled.</p>
           </div>
           
-          <div className="step-card">
-            <div className="step-num-badge">4</div>
-            <div className="step-icon-box">
-              <Truck size={32} />
+          <div className="timeline-step">
+            <div className="timeline-dot"></div>
+            <div className="timeline-content">
+              <h3>Step 4: Confirm via WhatsApp</h3>
+              <p>Confirm and send your pre-filled order details via WhatsApp to receive payment instructions.</p>
             </div>
-            <h3 className="step-title">Confirm & Enjoy</h3>
-            <p className="step-desc">We will confirm shipping costs in the chat and dispatch your authentic pickles right to your doorstep.</p>
+          </div>
+          
+          <div className="timeline-step">
+            <div className="timeline-dot"></div>
+            <div className="timeline-content">
+              <h3>Step 5: Doorstep Delivery</h3>
+              <p>Your fresh batch will be slow-cooked, securely sealed, and dispatched right to your door!</p>
+            </div>
           </div>
         </div>
       </section>
