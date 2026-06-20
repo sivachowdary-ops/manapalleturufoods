@@ -131,8 +131,9 @@ export default function NavbarWrapper() {
               className="hamburger-toggle" 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle navigation menu"
+              style={isMobileMenuOpen ? { visibility: 'hidden', opacity: 0, pointerEvents: 'none' } : {}}
             >
-              {isMobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
+              <Menu size={26} />
             </button>
           </div>
         </div>
@@ -152,6 +153,9 @@ export default function NavbarWrapper() {
                 <span className="brand-name-bottom">Foods</span>
               </div>
             </div>
+            <button className="mobile-drawer-close" onClick={() => setIsMobileMenuOpen(false)} aria-label="Close Menu">
+              <X size={24} />
+            </button>
           </div>
 
           <nav className="mobile-drawer-nav">
