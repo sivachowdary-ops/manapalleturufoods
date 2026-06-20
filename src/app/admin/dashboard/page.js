@@ -13,7 +13,7 @@ import {
   TrendingUp, ShoppingBag, DollarSign, Clock, Package, 
   Settings, LogOut, Store, Plus, Edit2, Trash2, Eye, 
   Check, X, ToggleLeft, ToggleRight, UserCheck, AlertTriangle,
-  Globe, KeyRound, Smartphone, MapPin, Mail
+  Globe, KeyRound, Smartphone, MapPin, Mail, Menu
 } from 'lucide-react';
 
 export default function AdminDashboard() {
@@ -22,6 +22,7 @@ export default function AdminDashboard() {
   const [dbMode, setDbMode] = useState('MockStorage');
   const [authorized, setAuthorized] = useState(false);
   const [adminEmail, setAdminEmail] = useState('');
+  const [isAdminMenuOpen, setIsAdminMenuOpen] = useState(false);
 
   // Catalog and Order State
   const [products, setProducts] = useState([]);
@@ -439,8 +440,17 @@ export default function AdminDashboard() {
           </div>
         </div>
 
+        {/* Mobile Hamburger Toggle */}
+        <button 
+          className="admin-menu-toggle"
+          onClick={() => setIsAdminMenuOpen(!isAdminMenuOpen)}
+          aria-label="Toggle Navigation Menu"
+        >
+          {isAdminMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
 
-        <nav className="admin-nav-tabs">
+        {/* Desktop Navigation */}
+        <nav className="admin-nav-tabs desktop-only">
           <button 
             className={`admin-tab ${activeTab === 'dashboard' ? 'active' : ''}`}
             onClick={() => { setActiveTab('dashboard'); setEditingItem(null); setIsAdding(null); }}
@@ -467,7 +477,8 @@ export default function AdminDashboard() {
           </button>
         </nav>
 
-        <div className="admin-actions">
+        {/* Desktop Actions */}
+        <div className="admin-actions desktop-only">
           <div className="admin-role-pill">
             <span className="role-dot">M</span>
             <span>Manager</span>
@@ -480,6 +491,63 @@ export default function AdminDashboard() {
           <button onClick={handleLogout} className="admin-logout-btn">
             <LogOut size={14} /> Logout
           </button>
+        </div>
+
+        {/* Mobile Navigation Drawer */}
+        <div className={`admin-mobile-drawer ${isAdminMenuOpen ? 'open' : ''}`}>
+          <div className="admin-mobile-drawer-content">
+            <div className="admin-mobile-header">
+              <span className="admin-mobile-title">Admin Controls</span>
+              <button 
+                className="admin-mobile-close"
+                onClick={() => setIsAdminMenuOpen(false)}
+              >
+                <X size={24} />
+              </button>
+            </div>
+            
+            <nav className="admin-mobile-nav">
+              <button 
+                className={`admin-mobile-nav-item ${activeTab === 'dashboard' ? 'active' : ''}`}
+                onClick={() => { setActiveTab('dashboard'); setIsAdminMenuOpen(false); setEditingItem(null); setIsAdding(null); }}
+              >
+                <TrendingUp size={18} /> Dashboard
+              </button>
+              <button 
+                className={`admin-mobile-nav-item ${activeTab === 'products' ? 'active' : ''}`}
+                onClick={() => { setActiveTab('products'); setIsAdminMenuOpen(false); setEditingItem(null); setIsAdding(null); }}
+              >
+                <Package size={18} /> Products
+              </button>
+              <button 
+                className={`admin-mobile-nav-item ${activeTab === 'orders' ? 'active' : ''}`}
+                onClick={() => { setActiveTab('orders'); setIsAdminMenuOpen(false); setEditingItem(null); setIsAdding(null); }}
+              >
+                <ShoppingBag size={18} /> Orders
+              </button>
+              <button 
+                className={`admin-mobile-nav-item ${activeTab === 'settings' ? 'active' : ''}`}
+                onClick={() => { setActiveTab('settings'); setIsAdminMenuOpen(false); setEditingItem(null); setIsAdding(null); }}
+              >
+                <Settings size={18} /> Settings
+              </button>
+              
+              <div className="admin-mobile-divider"></div>
+              
+              <button 
+                className="admin-mobile-nav-item"
+                onClick={() => { setActiveTab('dashboard'); setIsAdminMenuOpen(false); setEditingItem(null); setIsAdding(null); }}
+              >
+                <Store size={18} /> Manage Store
+              </button>
+              <Link href="/" className="admin-mobile-nav-item" target="_blank" onClick={() => setIsAdminMenuOpen(false)}>
+                <Globe size={18} /> View Store
+              </Link>
+              <button onClick={() => { handleLogout(); setIsAdminMenuOpen(false); }} className="admin-mobile-nav-item logout">
+                <LogOut size={18} /> Logout
+              </button>
+            </nav>
+          </div>
         </div>
       </header>
 
@@ -803,7 +871,7 @@ export default function AdminDashboard() {
 
             {/* VIEW D: SETTINGS & PASSWORD MANAGEMENT VIEW (Enhanced) */}
             {activeTab === 'settings' && !editingItem && !isAdding && (
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2.5rem' }} className="admin-products-grid">
+              <div className="admin-settings-grid">
                 
                 {/* Store Redirect Configurations */}
                 <div className="admin-card">
