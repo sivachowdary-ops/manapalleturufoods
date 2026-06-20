@@ -76,7 +76,7 @@ export default function NavbarWrapper() {
       <header className="navbar">
         <div className="navbar-container">
           <Link href="/" className="logo-link" onClick={() => setIsMobileMenuOpen(false)}>
-            <div className="logo-image-wrapper" style={{ minWidth: '60px' }}>
+            <div className="logo-image-wrapper">
               <Image 
                 src="/logo.png" 
                 alt="Mana Palleturu Foods Logo" 
