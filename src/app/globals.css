@@ -3138,6 +3138,17 @@ button, input, select, textarea {
   .summary-details-box {
     padding: 1.5rem 1.25rem !important;
   }
+  
+  .wizard-actions-row {
+    flex-direction: column-reverse !important;
+    gap: 0.75rem !important;
+    margin-top: 1.5rem !important;
+  }
+  
+  .wizard-primary-btn, .wizard-secondary-btn {
+    width: 100% !important;
+    flex: none !important;
+  }
 }
 
 /* How to Order Timeline Styles */

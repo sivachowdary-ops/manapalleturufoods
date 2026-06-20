@@ -94,8 +94,9 @@ export default function CartPage() {
       else delete newErrors.name;
     }
     if (field === 'phone') {
+      const digits = value.replace(/\D/g, '');
       if (!value.trim()) newErrors.phone = 'Phone number is required';
-      else if (!/^[0-9]{10}$/.test(value.trim())) newErrors.phone = 'Must be exactly 10 digits';
+      else if (digits.length < 10) newErrors.phone = 'Must be at least 10 digits';
       else delete newErrors.phone;
     }
     if (field === 'street') {
@@ -120,9 +121,10 @@ export default function CartPage() {
 
   // Form validity check
   const isFormValid = () => {
+    const cleanPhone = customerPhone.replace(/\D/g, '');
     return (
       customerName.trim().length > 0 &&
-      /^[0-9]{10}$/.test(customerPhone.trim()) &&
+      cleanPhone.length >= 10 &&
       customerStreet.trim().length > 0 &&
       customerCity.trim().length > 0 &&
       customerState.trim().length > 0 &&
@@ -169,9 +171,10 @@ Please confirm my order. Thank you!`;
       setWhatsappUrl(url);
 
       // 2. Prepare order payload and log order to database in background
+      const cleanPhoneDigits = customerPhone.replace(/\D/g, '').slice(-10);
       const orderPayload = {
         customer_name: `${customerName.trim()} - Address: ${customerStreet.trim()}, ${customerCity.trim()}, ${customerPincode.trim()}`,
-        customer_phone: customerPhone.trim(),
+        customer_phone: cleanPhoneDigits,
         customer_state: customerState.trim(),
         cart_contents: cart.map(item => ({
           id: item.id,
@@ -432,15 +435,14 @@ Please confirm my order. Thank you!`;
                   type="tel" 
                   id="phoneNumber" 
                   className={`form-input ${errors.phone ? 'invalid' : ''}`}
-                  placeholder="e.g. 9876543210 (10 digits)"
+                  placeholder="e.g. +91 98765 43210"
                   value={customerPhone}
                   onChange={(e) => {
-                    const val = e.target.value.replace(/\D/g, ''); // numbers only
-                    setCustomerPhone(val);
-                    validateField('phone', val);
+                    setCustomerPhone(e.target.value);
+                    validateField('phone', e.target.value);
                   }}
                   onBlur={() => validateField('phone', customerPhone)}
-                  maxLength={10}
+                  maxLength={16}
                   required
                 />
                 <span className="form-hint">Used to contact you on WhatsApp for shipping and order confirmation.</span>
