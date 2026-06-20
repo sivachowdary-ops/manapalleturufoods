@@ -152,9 +152,6 @@ export default function NavbarWrapper() {
                 <span className="brand-name-bottom">Foods</span>
               </div>
             </div>
-            <button className="mobile-drawer-close" onClick={() => setIsMobileMenuOpen(false)} aria-label="Close Menu">
-              <X size={24} />
-            </button>
           </div>
 
           <nav className="mobile-drawer-nav">
